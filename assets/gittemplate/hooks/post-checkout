@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# post-checkout hook for Sketch files Git tracking
+
+# Set UTF-8 encoding
+export LANG=UTF-8
+# Needed to work in SourceTree
+export PATH=/usr/local/bin:$PATH
+
+# Git repository absolute path
+git_root=$(git rev-parse --show-toplevel)
+# Unzipped Sketch files path
+unzipped_directory_name=".sketchgit"
+unzipped_root="$git_root/$unzipped_directory_name/"
+
+for unzipped_directory in $(find "$unzipped_root" -type d | grep ".sketchgit$"); do
+	# Sketch file path
+	sketch=$(echo "$unzipped_directory" | sed "s/$unzipped_directory_name\///" | sed "s/git$//")
+	# Sketch file directory path
+	sketch_directory=$(dirname "$sketch")
+
+	echo "Processing '$(basename $sketch)'."
+	# Zip the directory to recreate the Sketch file
+	cd "$unzipped_directory"
+	if ! [ -e $(dirname $sketch) ]; then
+		mkdir $(dirname $sketch)
+	fi
+	if zip -rq "$sketch" *; then
+		echo "  '$(basename $sketch)' Sketch file generated."
+	else
+		echo "  Couldn't generate '$(basename $sketch)' Sketch file. $sketch"
+		exit 1
+	fi
+	cd "$git_root"
+done

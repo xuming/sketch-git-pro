@@ -1,0 +1,35 @@
+#!/bin/bash
+# Set UTF-8 encoding
+export LANG=UTF-8
+# Needed to work in SourceTree
+export PATH=/usr/local/bin:$PATH
+
+set -e -o pipefail
+
+# Git repository absolute path
+git_root=$(git rev-parse --show-toplevel)
+# Unzipped Sketch files path
+unzipped_directory_name=".sketchgit"
+unzipped_root="$git_root/$unzipped_directory_name/"
+#sync deleted file 
+for unzipped_directory in $(find "$unzipped_root" -type d | grep ".sketchgit$"); do
+	# Sketch file path
+	sketch=$(echo "$unzipped_directory" | sed "s/$unzipped_directory_name\///" | sed "s/git$//")
+	if ! [ -e $sketch ]; then
+		rm -rf $unzipped_directory
+		echo $unzipped_directory deleted
+	fi 
+	cd "$git_root"
+done
+
+#sync new file
+for sketchfile  in $(find "$git_root" -type f | grep ".sketch$"); do
+	# Sketch file path
+	sketchgit=$(echo "$sketchfile" | sed "s:$git_root:$git_root/.sketchgit:g")git
+	if ! [ -e $sketchgit ]; then
+		$git_root/.git/hooks/unzip.sh $sketchfile $sketchgit
+		echo $sketchgit added
+	fi 
+done
+git add "$unzipped_directory/*"
+exit 

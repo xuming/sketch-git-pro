@@ -1,0 +1,108 @@
+{
+  "name": "Git",
+  "author": "simon hsu",
+  "authorEmail" : "coolchyni@gmail.com",
+  "identifier": "me.dmsy.git-plugin",
+  "compatibleVersion": 3,
+  "bundleVersion": 2,
+  "commands": [
+    {
+      "name": "update",
+      "identifier": "update",
+      "script": "./commands/update.js",
+      "handlers" : {
+        "actions": {
+          "OpenDocument": "onRun"
+        }
+      }
+    },
+    {
+      "name": "unzipOnSave",
+      "identifier": "unzipOnSave",
+      "script": "./commands/unzipOnSave.js",
+      "handlers" : {
+        "run": "onRun",
+        "actions": {
+          "DocumentSaved": "onRun"
+        }
+      }
+    },
+    {
+      "name": "提交本地修改记录(commit)",
+      "identifier": "commit",
+      "shortcut": "cmd ctrl c",
+      "script": "./commands/Commit.js",
+      "description" : "Commit your changes.",
+      "icon" : "icons/commit.png"
+    },
+    {
+      "name": "推送到服务器(push)",
+      "identifier": "push",
+      "shortcut": "cmd ctrl p",
+      "script": "./commands/Push.js",
+      "description" : "Push your commits to GitHub.",
+      "icon" : "icons/push.png"
+    },
+    {
+      "name": "管理分支",
+      "identifier": "branches",
+      "shortcut": "cmd ctrl b",
+      "script": "./commands/Branches.js",
+      "description" : "Manage git branches.",
+      "icon" : "icons/branches.png"
+    },
+    {
+      "name": "从服务器拉取(pull)",
+      "identifier": "pull",
+      "script": "./commands/Pull.js",
+      "description" : "Pull changes and branches from GitHub.",
+      "icon" : "icons/pull.png"
+    },
+    {
+      "name": "Generate files for pretty diffs",
+      "identifier": "export",
+      "script": "./commands/Export.js"
+    },
+    {
+      "name": "添加到版本库",
+      "identifier": "add",
+      "script": "./commands/Add.js"
+    },
+    {
+      "name": "初始化",
+      "identifier": "init",
+      "script": "./commands/Init.js"
+    },
+    {
+      "name": "偏好设置",
+      "identifier": "preferences",
+      "script": "./commands/Preferences.js"
+    },
+    {
+      "name": "打开控制台",
+      "identifier": "terminal",
+      "script": "./commands/OpenTerminal.js"
+    },
+    {
+      "name": "设置远程仓库地址",
+      "identifier": "setremote",
+      "script": "./commands/SetRemote.js"
+    }
+  ],
+  "menu": {
+    "title": "版本库pro",
+    "items": [
+      "commit",
+      "push",
+      "pull",
+      {
+        "title": "高级功能..",
+        "items": [
+          "init",
+          "setremote",
+          "terminal"
+        ]
+      }
+    ]
+  }
+}
