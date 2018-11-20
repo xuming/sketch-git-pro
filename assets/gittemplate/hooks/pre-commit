@@ -31,5 +31,5 @@ for sketchfile  in $(find "$git_root" -type f | grep ".sketch$"); do
 		echo $sketchgit added
 	fi 
 done
-git add "$unzipped_directory/*"
+#git add "$unzipped_root/*"
 exit 

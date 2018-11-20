@@ -37,7 +37,7 @@ export default function (context) {
       setUserPreferences(context,prefs)
       if (commitMsg.checked) {
         message=exec(context, 'git -c push.default=current push -q')
-        context.document.showMessage(message.split('\n').join(' '))
+        context.document.showMessage("数据已提交到服务器")
         return
       }
     }

@@ -15,12 +15,15 @@ export function executeSafely (context, func) {
   }
 }
 
-export function exec (context, command) {
+export function exec (context, command,path='') {
+  console.log(command)
   var task = NSTask.alloc().init()
   var pipe = NSPipe.pipe()
   var errPipe = NSPipe.pipe()
 
-  var path = getCurrentDirectory(context)
+  if (path==''){
+    path = getCurrentDirectory(context)
+  }
   command = `cd "${path}" && ${command}`
 
   task.setLaunchPath_('/bin/bash')
@@ -44,7 +47,9 @@ export function exec (context, command) {
 
   return NSString.alloc().initWithData_encoding_(data, NSUTF8StringEncoding)
 }
-
+export function showinfo(context,info){
+  createInfoAlert(context, '提示', info)
+}
 export function getCurrentDirectory (context) {
   return context.document.fileURL().URLByDeletingLastPathComponent().path()
 }
@@ -215,14 +220,16 @@ export function unzipFile (context,prefs) {
 }
 
 
-export function checkForFile (context) {
+export function checkForFile (context,showalert=true) {
   try {
     getCurrentFileName(context)
     getCurrentDirectory(context)
     return true
   } catch (e) {
-    sendError(context, 'Missing file')
-    createFailAlert(context, '缺少文件', '请先打开sketch文件')
+    if(showalert){
+      sendError(context, 'Missing file')
+      createFailAlert(context, '缺少文件', '请先打开sketch文件!')
+    }
     return false
   }
 }
@@ -246,9 +253,10 @@ export function checkForSketchgitFolder (context) {
 }
 
 
-export function checkIsGitRepository (context) {
+export function checkIsGitRepository (context,path='') {
   try {
-    getGitDirectory(context)
+
+    return exec(context, 'git rev-parse --show-toplevel',path).trim().replace('(B[m', '')
     return true
   } catch (e) {
     sendError(context, 'Not a git repository')
@@ -269,9 +277,9 @@ export function checkForRemote (context) {
   }
 }
 
-export function getRemoteUrl (context) {
+export function getRemoteUrl (context,path='') {
   try {
-    return exec(context, 'git remote get-url origin').trim()
+    return exec(context, 'git remote get-url origin',path).trim()
   } catch (e) {
     return ""
   }

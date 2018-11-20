@@ -27,22 +27,22 @@ if unzip -q -o $sketch -d ${EXPORT_FOLDER}; then
 	if cd "$unzipped_directory"; then
 
 		echo "  '$(basename $sketch)' unzipped."
-		# Prettify all JSON files
-		for json_file in $(find . -name "*.json"); do
-			if python -m json.tool "$json_file" "$json_file".pretty; then
-				if mv "$json_file".pretty "$json_file"; then
-					echo "  '$json_file' prettified."
-				else
-					echo "  Couldn't move prettified '$json_file'."
-					rm -rf "$unzipped_directory"
-					exit 1
-				fi
-			else
-				echo "  Couldn't prettify '$json_file'."
-				rm -rf "$unzipped_directory"
-				exit 1
-			fi
-		done
+		#Prettify all JSON files
+		# for json_file in $(find . -name "*.json"); do
+		# 	if python -m json.tool "$json_file" "$json_file".pretty; then
+		# 		if mv "$json_file".pretty "$json_file"; then
+		# 			echo "  '$json_file' prettified."
+		# 		else
+		# 			echo "  Couldn't move prettified '$json_file'."
+		# 			rm -rf "$unzipped_directory"
+		# 			exit 1
+		# 		fi
+		# 	else
+		# 		echo "  Couldn't prettify '$json_file'."
+		# 		rm -rf "$unzipped_directory"
+		# 		exit 1
+		# 	fi
+		# done
 	else
 		echo "  Couldn't change directory to '$unzipped_directory'."
 		exit 1
@@ -57,7 +57,10 @@ fi
 cd "$DIR_PATH"
 
 preview_folder="$EXPORT_FOLDER/previews"
-rm "$preview_folder/preview.png"
+if [ -e $preview_folder/preview.png ]; then
+  rm "$preview_folder/preview.png"
+fi
+
 # get list of artboard names to export
 #ARTBOARDS=$("$BUNDLE_PATH"/Contents/Resources/sketchtool/bin/sketchtool list artboards "$FILENAME" --include-symbols=NO | python "$(dirname "$0")"/getArtboardNames.py "$IGNORE" | tr '\n' ',')
 

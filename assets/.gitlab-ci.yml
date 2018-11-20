@@ -1,0 +1,8 @@
+build job:
+  stage: build
+  tags:
+    - sketch
+  script:
+    - sh /Users/zztzt/product/shell/sketch.sh
+  allow_failure: false
+

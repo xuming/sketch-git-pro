@@ -90,16 +90,17 @@
     }
   ],
   "menu": {
-    "title": "版本库pro",
+    "title": "版本库pro 0.1.1",
     "items": [
       "commit",
       "push",
       "pull",
+      "setremote",
       {
         "title": "高级功能..",
         "items": [
           "init",
-          "setremote",
+         
           "terminal"
         ]
       }
