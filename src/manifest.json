@@ -87,20 +87,26 @@
       "name": "设置远程仓库地址",
       "identifier": "setremote",
       "script": "./commands/SetRemote.js"
+    },
+    {
+      "name": "撤销本地修改",
+      "identifier": "reset",
+      "script": "./commands/reset.js"
     }
   ],
   "menu": {
-    "title": "版本库pro 0.1.1",
+    "title": "版本库pro",
     "items": [
       "commit",
       "push",
       "pull",
-      "setremote",
+      "reset",
+      "branches",
       {
         "title": "高级功能..",
         "items": [
           "init",
-         
+          "setremote",
           "terminal"
         ]
       }

@@ -12,7 +12,7 @@ export default function (context) {
     sendEvent(context, 'Commit', 'Start commiting')
     var currentBranch = getCurrentBranch(context)
     const prefs = getUserPreferences(context)
-    var commitMsg = createInputWithCheckbox(context, '提交更新到 "' + currentBranch + '" ，请输入更新说明', '推送到远程服务器', prefs.autoPushOnCommit, 'Commit')
+    var commitMsg = createInputWithCheckbox(context, '提交更新到 "' + currentBranch + '" ，请输入更新说明', '推送到远程服务器', prefs.autoPushOnCommit, '现在提交')
 
     if (commitMsg.responseCode == 1000 && commitMsg.message != null) {
       var gitDir=getGitDirectory(context)

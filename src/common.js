@@ -117,7 +117,17 @@ export function createInput (context, msg, okLabel, cancelLabel,value='') {
     message: message
   }
 }
+export function reOpenDocument(context){
+  var sketch = require('sketch/dom')
+  var document = sketch.fromNative(context.document)
+  document.close()
 
+  sketch.Document.open(context.document.fileURL(),(err, document) => {
+    if (err) {
+      console.log(err)
+    }
+  })
+}
 export function createConfirm (context, msg, okLabel, cancelLabel) {
   var accessory = NSView.alloc().initWithFrame(NSMakeRect(0, 0, 300, 50))
   var alert = NSAlert.alloc().init()
@@ -253,6 +263,16 @@ export function checkForSketchgitFolder (context) {
 }
 
 
+export function checkIsModified (context) {
+  try {
+
+    var msg=exec(context, 'git status')
+
+    return msg.indexOf('nothing to commit')==-1
+  } catch (e) {
+    return true
+  }
+}
 export function checkIsGitRepository (context,path='') {
   try {
 
