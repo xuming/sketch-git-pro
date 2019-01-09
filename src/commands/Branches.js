@@ -1,6 +1,6 @@
 // Branches (cmd alt ctrl b)
 import { sendEvent } from '../analytics'
-import { checkIsModified,getCurrentBranch, checkForFile, exec, executeSafely, createInput, setIconForAlert, createInfoAlert, createConfirm, reOpenDocument, showinfo } from '../common'
+import { _,getCurrentBranch, checkForFile, exec, executeSafely, createInput, setIconForAlert, createInfoAlert, createConfirm, reOpenDocument, showinfo } from '../common'
 var ObjCClass = require('cocoascript-class').default
 var delegateClass = new ObjCClass({
   options: null,
@@ -14,7 +14,7 @@ var delegateClass = new ObjCClass({
 })
 
 function createSelect(context, msg) {
-
+  var i18 = _(context);
   function refresh() {
     var listBranchesCommand = 'git for-each-ref --format=\'%(refname:short)\' refs/heads/'
     var listBranches = exec(context, listBranchesCommand)
@@ -39,21 +39,21 @@ function createSelect(context, msg) {
     onClicked: function handleEnd() {
       var branchname = comboBox.objectValueOfSelectedItem()
       if(branchname=='master'){
-        createInfoAlert(context,"提示","您不能删除master分支")
+        createInfoAlert(context,i18.common.info,i18.branches.m2)
         return 
       }
       executeSafely(context, function () {
-        if (createConfirm(context, "是否要删除分支" + branchname)) {
+        if (createConfirm(context, i18.branches.m3 + branchname)) {
           var command = 'git branch -D ' + branchname
           exec(context, command)
-          createInfoAlert(context, "提示", "分支'"+branchname+"'删除成功")
+          createInfoAlert(context, i18.common.info, i18.branches.m4.replace("{branchname}", branchname))
           refresh()
         }
       })
     },
   })
   var button = NSButton.alloc().initWithFrame(NSMakeRect(160, 15, 50, 25))
-  button.setTitle('删除')
+  button.setTitle(i18.branches.m5)
   button.setTarget(delegateDel)
   button.setAction(NSSelectorFromString('buttonClicked:'))
   accessory.addSubview(button)
@@ -61,16 +61,16 @@ function createSelect(context, msg) {
   var delegate = delegateClass.new()
   delegate.options = NSDictionary.dictionaryWithDictionary({
     onClicked: function handleEnd() {
-      var ret = createInput(context, "创建新分支", "确定", "取消")
+      var ret = createInput(context, i18.branches.m6, i18.common.ok, i18.common.cancel)
       if (ret.responseCode == 1000) {
         if (ret.message == null || ret.message == '') {
-          createInfoAlert(context, "提示", "分支名不能为空")
+          createInfoAlert(context, i18.common.info, i18.branches.m7)
           return
         }
         executeSafely(context, function () {
           var command = 'git branch ' + ret.message
           exec(context, command)
-          createInfoAlert(context, "提示", "分支创建成功")
+          createInfoAlert(context, i18.common.info,i18.branches.m8)
           refresh()
 
         })
@@ -79,7 +79,7 @@ function createSelect(context, msg) {
   })
 
   var button2 = NSButton.alloc().initWithFrame(NSMakeRect(220, 15, 75, 25))
-  button2.setTitle('创建新分支')
+  button2.setTitle(i18.branches.m1)
   button2.setTarget(delegate)
   button2.setAction(NSSelectorFromString('buttonClicked:'))
   accessory.addSubview(button2)
@@ -87,8 +87,8 @@ function createSelect(context, msg) {
 
   var alert = NSAlert.alloc().init()
   alert.setMessageText(msg)
-  alert.addButtonWithTitle('切换分支')
-  alert.addButtonWithTitle('以后再说')
+  alert.addButtonWithTitle(i18.branches.m9)
+  alert.addButtonWithTitle(i18.branches.m10)
   setIconForAlert(context, alert)
   alert.setAccessoryView(accessory)
 
@@ -102,25 +102,28 @@ function createSelect(context, msg) {
 }
 
 export default function (context) {
+  var i18 = _(context);
   if (!checkForFile(context)) { return }
-  var ret = createSelect(context, "选择分支")
+  var ret = createSelect(context, i18.branches.m11)
   if (ret.responseCode == 1000) {
     if (ret.branchName == null || ret.branchName == '') {
-      createInfoAlert(context, "提示", "分支名不能为空")
+      createInfoAlert(context, i18.common.info, i18.branches.m12)
       return
     }
-    if(checkIsModified(context)){
-      createInfoAlert(context, "提示", "请先提交本地修改")
-      return 
-    }
+    // if(checkIsModified(context)){
+    //   createInfoAlert(context, "提示", "请先提交本地修改")
+    //   return 
+    // }
     var name=ret.branchName
     executeSafely(context, function () {
       sendEvent(context, 'Branch', 'Switch branch', 'Did switch branch')
-      var command = `git checkout -q  ${name} ;`
+      var currentBranch = getCurrentBranch(context)
+
+      var command = `git stash save ${currentBranch} ;git clean -dxf; git checkout -q  ${name} ;`
       exec(context, command)
       // var app = NSApp.delegate()
       // app.refreshCurrentDocument()
-      context.document.showMessage(`切换当前分支为'${name}'`)
+      context.document.showMessage(i18.branches.m13+`'${name}'`)
       reOpenDocument(context)
     })
   }

@@ -6,13 +6,14 @@ import { getUserPreferences, setUserPreferences } from '../preferences'
 var sketch = require('sketch/dom')
 
 export default function (context) {
+  var i18 = _(context);
   if (!checkForFile(context)) { return }
   executeSafely(context, function () {
     if (!checkForSketchgitFolder(context)){return}
     sendEvent(context, 'Commit', 'Start commiting')
     var currentBranch = getCurrentBranch(context)
     const prefs = getUserPreferences(context)
-    var commitMsg = createInputWithCheckbox(context, '提交更新到 "' + currentBranch + '" ，请输入更新说明', '推送到远程服务器', prefs.autoPushOnCommit, '现在提交')
+    var commitMsg = createInputWithCheckbox(context, i18.commit.m1.replace('{branch}',currentBranch), i18.commit.m2, prefs.autoPushOnCommit, i18.commit.m3)
 
     if (commitMsg.responseCode == 1000 && commitMsg.message != null) {
       var gitDir=getGitDirectory(context)
@@ -26,9 +27,9 @@ export default function (context) {
       }catch(e){
         var err=String(e.reason)
         if (err.indexOf('nothing to commit')>-1){
-          createInfoAlert(context, '提示', '文件没有被修改，不需要提交')
+          createInfoAlert(context,i18.common.info, i18.commit.m4)
         }else{
-          createInfoAlert(context, '提示', e)
+          createInfoAlert(context, i18.common.info, e)
         }
         return
       }
@@ -37,7 +38,7 @@ export default function (context) {
       setUserPreferences(context,prefs)
       if (commitMsg.checked) {
         message=exec(context, 'git -c push.default=current push -q')
-        context.document.showMessage("数据已提交到服务器")
+        context.document.showMessage(i18.commit.m5)
         return
       }
     }

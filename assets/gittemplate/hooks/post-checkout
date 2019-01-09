@@ -12,6 +12,17 @@ git_root=$(git rev-parse --show-toplevel)
 # Unzipped Sketch files path
 unzipped_directory_name=".sketchgit"
 unzipped_root="$git_root/$unzipped_directory_name/"
+rm $git_root/*.sketch
+
+cur_branch=$(git rev-parse --abbrev-ref HEAD)
+stash_name=$(git stash list | grep "$cur_branch$" | cut -d: -f1)
+
+if [ $stash_name ] ; then 
+	# echo $cur_branch >>/a.txt
+	# echo $stash_name >>/a.txt
+	git stash apply $stash_name
+	git stash drop $stash_name
+fi
 
 for unzipped_directory in $(find "$unzipped_root" -type d | grep ".sketchgit$"); do
 	# Sketch file path

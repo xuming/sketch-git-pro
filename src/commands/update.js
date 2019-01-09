@@ -1,7 +1,7 @@
 import update from 'sketch-module-update'
 import { setIconForAlert } from '../common'
 
-const repoFullName = 'mathieudutour/git-sketch-plugin'
+const repoFullName = 'sketch-git-pro'
 
 const options = {
   title: 'A new Git plugin version is available!',

@@ -27,7 +27,7 @@ export default function (context) {
       }else{
         const pluginPath = context.scriptPath.replace(/\/Contents\/Sketch\/(\w*)\.js$/, '').replace(/ /g, '\\ ')
         
-        var command = `if ! [ -e  ".git/hooks/pre-commit" ] ;then cp -R ${pluginPath}/Contents/Resources/gittemplate/ .git/ ; fi;`
+        var command = `cp -R ${pluginPath}/Contents/Resources/gittemplate/ .git/ `
         exec(context, command)
         command = `if ! [ -e  ".gitignore" ] ;then echo "*.sketch">.gitignore;git add .gitignore; fi;`
         exec(context, command)

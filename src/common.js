@@ -1,6 +1,48 @@
 // Common library of things
 import { sendError } from './analytics'
+export function _(context) {
+  var i18nKey = "me.dmsy.git-plugin2.i18n";
+  var lang = NSUserDefaults.standardUserDefaults().objectForKey(i18nKey);
+  if (lang == undefined) {
+      var macOSVersion = NSDictionary.dictionaryWithContentsOfFile("/System/Library/CoreServices/SystemVersion.plist").objectForKey("ProductVersion") + "";
+      lang = NSUserDefaults.standardUserDefaults().objectForKey("AppleLanguages").objectAtIndex(0);
+      lang = (macOSVersion >= "10.12") ? lang.split("-").slice(0, -1).join("-") : lang;
+      if (lang.indexOf('zh') > -1) {
+          lang = 'zhCN';
+      } else {
+          lang = 'enUS';
+      }
+              
+      NSUserDefaults.standardUserDefaults().setObject_forKey(lang, i18nKey);
+      setLanguate(context, lang)
 
+  }
+  if (encodeURIComponent(lang.toString()).length != 4) {
+      lang = 'enUS';
+      NSUserDefaults.standardUserDefaults().setObject_forKey(lang, i18nKey);
+  }
+
+  function get_(json, context) {
+      var manifestPath = context.plugin.url().URLByAppendingPathComponent("Contents").URLByAppendingPathComponent("Resources").URLByAppendingPathComponent("i18n").URLByAppendingPathComponent(json + ".json").path();
+      var jsonData = NSData.dataWithContentsOfFile(manifestPath);
+      jsonData = NSString.alloc().initWithData_encoding_(jsonData, NSUTF8StringEncoding);;
+      return JSON.parse(jsonData);
+  }
+  var i18Content = {};
+  i18Content = get_(lang, context);
+
+  return i18Content;
+};
+
+export function setLanguate(context,lang){
+  var allManifestPath = context.plugin.url().URLByAppendingPathComponent("Contents").URLByAppendingPathComponent("Resources").URLByAppendingPathComponent("i18n").URLByAppendingPathComponent("manifest-" + lang + ".json").path();
+                
+  var manifestLangData = NSJSONSerialization.JSONObjectWithData_options_error(NSData.dataWithContentsOfFile(allManifestPath), NSJSONReadingMutableContainers, nil)
+  
+  var localManiFest = context.plugin.url().URLByAppendingPathComponent("Contents").URLByAppendingPathComponent("Sketch").URLByAppendingPathComponent("manifest.json").path();
+  NSString.alloc().initWithData_encoding(NSJSONSerialization.dataWithJSONObject_options_error(manifestLangData, NSJSONWritingPrettyPrinted, nil), NSUTF8StringEncoding).writeToFile_atomically_encoding_error(localManiFest, true, NSUTF8StringEncoding, nil);
+
+}
 export function setIconForAlert (context, alert) {
   alert.setIcon(NSImage.alloc().initWithContentsOfFile(
     context.plugin.urlForResourceNamed('icon.png').path()))
@@ -16,7 +58,7 @@ export function executeSafely (context, func) {
 }
 
 export function exec (context, command,path='') {
-  console.log(command)
+  //console.log(command)
   var task = NSTask.alloc().init()
   var pipe = NSPipe.pipe()
   var errPipe = NSPipe.pipe()
@@ -121,7 +163,18 @@ export function reOpenDocument(context){
   var sketch = require('sketch/dom')
   var document = sketch.fromNative(context.document)
   document.close()
-
+  var path=context.document.fileURL().path()
+  if(!fileExists(path)){
+    showinfo(context,"文件 '"+context.document.fileURL().path()+"' 不存在，请重新打开一个文件");
+    // sketch.Document.open((err, document) => {
+    //   if (err) {
+    //     // oh no, we failed to open the document
+    //   }
+    //   // if the user cancel the opening, `document` will be `undefined`
+    // })
+    
+    return 
+  }
   sketch.Document.open(context.document.fileURL(),(err, document) => {
     if (err) {
       console.log(err)
