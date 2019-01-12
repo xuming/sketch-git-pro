@@ -8,11 +8,14 @@
   "resources": [
     "Resources/branches.js"
   ],
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/xuming/sketch-git-pro.git"
+  },
   "skpm": {
     "name": "sketch-git-pro",
     "manifest": "src/manifest.json",
     "main": "sketch-git-pro.sketchplugin",
-    "repository":"https://github.com/xuming/sketch-git-pro",
     "assets": [
       "assets/**/*",
       "src/i18n/*"
