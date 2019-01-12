@@ -11,4 +11,5 @@ npm-debug.log
 
 # WebStorm
 .idea
-sketch-git-pro.sketchplugin
+*.sketchplugin
+*.zip

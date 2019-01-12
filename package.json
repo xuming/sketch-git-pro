@@ -1,6 +1,7 @@
 {
   "name": "sketch-git-pro",
-  "version": "0.1.4",
+  "version": "0.1.5",
+  "description": "Git tools for sketch.",
   "engines": {
     "sketch": ">=3.0"
   },
@@ -11,6 +12,7 @@
     "name": "sketch-git-pro",
     "manifest": "src/manifest.json",
     "main": "sketch-git-pro.sketchplugin",
+    "repository":"https://github.com/xuming/sketch-git-pro",
     "assets": [
       "assets/**/*",
       "src/i18n/*"
