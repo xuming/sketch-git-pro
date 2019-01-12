@@ -45,6 +45,8 @@
     "skpm": "^0.9.7"
   },
   "dependencies": {
+    "hoek": ">=4.2.1",
+    "cryptiles": ">=4.1.2",
     "eslint-config-sketch": "^0.2.2",
     "eslint-config-standard-preact": "^1.0.1",
     "eslint-plugin-react": "^6.10.3",
