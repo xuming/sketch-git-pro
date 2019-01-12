@@ -1,14 +1,66 @@
 {
+	"common":{
+		"info":"Info",
+		"error":"Error",
+		"ok":"OK",
+		"cancel":"Cancel",
+		"m1":"Sketch file not saved!",
+		"m2":"Missing file",
+		"m3":"Please set the remote url first!",
+		"m4":"Please init project first!",
+		"m5":"Please open sketch file first!",
+		"m6":"File '{file}' not exist! Please open a new file!"
+	},
 	"branches":{
-		"m1":"Create new branch",
-		"m2":"发现新版本",
-		"m3":"已经是最新版",
-		"m4":"Miaow 最新版本为 ",
-		"m5":" 当前版本为 ",
-		"m6":"，是否自动下载更新？",
-		"m7":"升级",
-		"m8":"暂不",
-		"m9":"确定",
-		"m10":"警告"
+		"m1":"Create New Branch",
+		"m2":"The branch of master can't be deleted",
+		"m3":"Remove this branch, sure?",
+		"m4":"Branch of '{branchname}' deleted!",
+		"m5":"Remove",
+		"m6":"Create New Branch",
+		"m7":"The name of branch can't be empty",
+		"m8":"The branch created!",
+		"m9":"Change branch",
+		"m10":"Later",
+		"m11":"Select a branch",
+		"m12":"The name of branch can't be empty",
+		"m13":"Change current branch to "
+	},
+	"commit":{
+		"m1":"Commit to '{branch}' :",
+		"m2":"Push to remote",
+		"m3":"Commit now",
+		"m4":"No file change，no commit is need!",
+		"m5":"Data pushed!"
+	},
+	"init":{
+		"m1":"Init succeed!",
+		"m2":"This project has inited.",
+		"m3":"No file opened."
+	},
+	"pull":{
+		"m1":"Files have existed，how to continue?",
+		"m2":"Merge",
+		"m3":"Replace",
+		"m4":"Data pulled!"
+	},
+	"push":{
+		"m1":"Data pushed"
+	},
+	"reset":{
+		"m1":"Reset to last commit？",
+		"m2":"Reset succeed!"
+	},
+	"setremote":{
+		"m1":"Remote url:",
+		"m2":"Set now",
+		"m3":"Later",
+		"m4":"Username:",
+		"m5":"Password:",
+		"m6":"Please input login info:",
+		"m7":"Please save sketch file first.",
+		"m8":"The url is empty!",
+		"m9":"Set remote succeed!!!",
+		"m10":"Invalid username or password!"
 	}
 }

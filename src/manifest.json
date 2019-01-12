@@ -7,9 +7,9 @@
   "bundleVersion": 2,
   "commands": [
     {
-      "name": "update",
-      "identifier": "update",
-      "script": "./commands/update.js",
+      "name": "OnOpen",
+      "identifier": "OnOpen",
+      "script": "./commands/OnOpen.js",
       "handlers" : {
         "actions": {
           "OpenDocument": "onRun"
@@ -92,14 +92,7 @@
       "name": "中文",
       "identifier": "chinese",
       "script": "./lang/zhCN.js"
-    },
-
-    {
-      "name": "checkupdate",
-      "identifier": "checkupdate",
-      "script": "./commands/update.js"
     }
-
   ],
   "menu": {
     "title": "Git pro",
@@ -115,7 +108,6 @@
           "init",
           "setremote",
           "terminal",
-          "checkupdate",
           {
             "title":"language..",
             "items":[

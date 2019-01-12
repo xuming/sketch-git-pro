@@ -2,7 +2,15 @@
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
   <channel>
     <item>
-      <enclosure url="https://github.com/xuming/sketch-git-pro/releases/download/0.1.1/sketch-git-pro.sketchplugin.zip" sparkle:version="0.1.1"/>
+      <title>Version 0.1.4</title>
+      <description>
+        <![CDATA[
+            <ul>
+            <li>Git tools for sketch. </li>
+            </ul>
+          ]]>
+      </description>
+      <enclosure url="https://github.com/xuming/sketch-git-pro/releases/download/0.1.4/sketch-git-pro.sketchplugin.zip" sparkle:version="0.1.4"/>
     </item>
   </channel>
 </rss>

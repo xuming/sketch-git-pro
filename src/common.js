@@ -29,6 +29,7 @@ export function _(context) {
       return JSON.parse(jsonData);
   }
   var i18Content = {};
+  console.log(lang)
   i18Content = get_(lang, context);
 
   return i18Content;
@@ -36,6 +37,8 @@ export function _(context) {
 
 export function setLanguate(context,lang){
   sendEvent(context,"setlang",lang)
+  var i18nKey = "me.dmsy.git-plugin.i18n";
+  NSUserDefaults.standardUserDefaults().setObject_forKey(lang, i18nKey);
   var allManifestPath = context.plugin.url().URLByAppendingPathComponent("Contents").URLByAppendingPathComponent("Resources").URLByAppendingPathComponent("i18n").URLByAppendingPathComponent("manifest-" + lang + ".json").path();
                 
   var manifestLangData = NSJSONSerialization.JSONObjectWithData_options_error(NSData.dataWithContentsOfFile(allManifestPath), NSJSONReadingMutableContainers, nil)
@@ -113,7 +116,7 @@ export function createFailAlert (context, title, error, buttonToReport) {
   var alert = NSAlert.alloc().init()
   alert.informativeText = '' + error
   alert.messageText = title
-  alert.addButtonWithTitle('确定')
+  alert.addButtonWithTitle('OK')
   if (buttonToReport) {
     alert.addButtonWithTitle('Report issue')
   }
@@ -167,7 +170,8 @@ export function reOpenDocument(context){
   document.close()
   var path=context.document.fileURL().path()
   if(!fileExists(path)){
-    showinfo(context,"文件 '"+context.document.fileURL().path()+"' 不存在，请重新打开一个文件");
+    i18=_(context)
+    showinfo(context,i18.common.m6.replace("{file}",context.document.fileURL().path()));
     // sketch.Document.open((err, document) => {
     //   if (err) {
     //     // oh no, we failed to open the document

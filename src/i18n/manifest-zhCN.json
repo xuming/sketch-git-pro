@@ -7,10 +7,10 @@
   "bundleVersion": 2,
   "commands": [
     {
-      "name": "update",
-      "identifier": "update",
-      "script": "update.js",
-      "handlers": {
+      "name": "OnOpen",
+      "identifier": "OnOpen",
+      "script": "./commands/OnOpen.js",
+      "handlers" : {
         "actions": {
           "OpenDocument": "onRun"
         }
