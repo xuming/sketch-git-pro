@@ -16,10 +16,16 @@ var delegateClass = new ObjCClass({
 function createSelect(context, msg) {
   var i18 = _(context);
   function refresh() {
-    var listBranchesCommand = 'git for-each-ref --format=\'%(refname:short)\' refs/heads/'
+    //local branch
+    var listBranchesCommand = 'git for-each-ref --format=\'%(refname:short)\' refs/heads/ refs/remotes'
     var listBranches = exec(context, listBranchesCommand)
+    listBranches=listBranches.replace(/(.*\/)|(HEAD)/g,"").trim()
     listBranches = listBranches.split('\n')
-    listBranches.pop()
+
+
+    listBranches=Array.from(new Set(listBranches));
+
+
     var currentBranch = getCurrentBranch(context)
     comboBox.removeAllItems()
     comboBox.addItemsWithObjectValues(listBranches)

@@ -1,6 +1,6 @@
 // Commits all working file to git (cmd alt ctrl c)
 import { sendEvent } from '../analytics'
-import { getCurrentBranch, checkForFile, executeSafely, exec, createInputWithCheckbox, getGitDirectory,checkForSketchgitFolder, createInfoAlert } from '../common'
+import { _,getCurrentBranch, checkForFile, executeSafely, exec, createInputWithCheckbox, getGitDirectory,checkForSketchgitFolder, createInfoAlert } from '../common'
 import { getUserPreferences, setUserPreferences } from '../preferences'
 
 var sketch = require('sketch/dom')

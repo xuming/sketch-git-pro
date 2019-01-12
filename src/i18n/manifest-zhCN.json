@@ -92,6 +92,11 @@
       "name": "中文",
       "identifier": "chinese",
       "script": "zhCN.js"
+    },
+    {
+      "name": "检查更新",
+      "identifier": "checkupdate",
+      "script": "./commands/update.js"
     }
   ],
   "menu": {

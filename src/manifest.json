@@ -92,6 +92,12 @@
       "name": "中文",
       "identifier": "chinese",
       "script": "./lang/zhCN.js"
+    },
+
+    {
+      "name": "checkupdate",
+      "identifier": "checkupdate",
+      "script": "./commands/update.js"
     }
 
   ],
@@ -109,6 +115,7 @@
           "init",
           "setremote",
           "terminal",
+          "checkupdate",
           {
             "title":"language..",
             "items":[

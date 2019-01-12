@@ -1,13 +1,14 @@
 // Pull
 import { sendEvent } from '../analytics'
-import { checkForFile, executeSafely, exec, checkForRemote,setIconForAlert, createInfoAlert, reOpenDocument, getCurrentBranch } from '../common'
+import {_, checkForFile, executeSafely, exec, checkForRemote,setIconForAlert, createInfoAlert, reOpenDocument, getCurrentBranch } from '../common'
 function doConfirm(context) {
+  var i18=_(context)
   var accessory = NSView.alloc().initWithFrame(NSMakeRect(0, 0, 300, 50))
   var alert = NSAlert.alloc().init()
-  alert.setMessageText("本地文件已经存在，请选择操作方式：")
-  alert.addButtonWithTitle('合并')
-  alert.addButtonWithTitle('覆盖')
-  alert.addButtonWithTitle("取消")
+  alert.setMessageText(i18.pull.m1)
+  alert.addButtonWithTitle(i18.pull.m2)
+  alert.addButtonWithTitle(i18.pull.m3)
+  alert.addButtonWithTitle(i18.common.cancel)
   setIconForAlert(context, alert)
   alert.setAccessoryView(accessory)
   var responseCode = alert.runModal()
@@ -20,7 +21,7 @@ export default function (context) {
   if (!checkForFile(context)) { return }
   if (!checkForRemote(context)){return }
   var branchname = getCurrentBranch(context)
-    
+  var i18=_(context)  
   var responseCode=doConfirm(context) 
   if (responseCode==1002){
     return
@@ -29,7 +30,7 @@ export default function (context) {
       sendEvent(context, 'Pull', 'Pull remote')
       //强制拉取并覆盖本地文件 
       exec(context,`git fetch --all; git reset --hard origin/${branchname};git pull -q;git checkout ;`)
-      context.document.showMessage('拉取数据成功！')
+      context.document.showMessage(i18.pull.m4)
     })
   }else{//合并 
     
@@ -38,7 +39,7 @@ export default function (context) {
       sendEvent(context, 'Pull', 'Pull remote')
       //强制拉取并覆盖本地文件 
       exec(context,`git pull origin ${branchname} -q;git checkout `)
-      context.document.showMessage('拉取数据成功！')
+      context.document.showMessage(i18.pull.m4)
     })
   }
 

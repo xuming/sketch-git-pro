@@ -1,7 +1,7 @@
 // Common library of things
-import { sendError } from './analytics'
+import { sendError, sendEvent } from './analytics'
 export function _(context) {
-  var i18nKey = "me.dmsy.git-plugin2.i18n";
+  var i18nKey = "me.dmsy.git-plugin.i18n";
   var lang = NSUserDefaults.standardUserDefaults().objectForKey(i18nKey);
   if (lang == undefined) {
       var macOSVersion = NSDictionary.dictionaryWithContentsOfFile("/System/Library/CoreServices/SystemVersion.plist").objectForKey("ProductVersion") + "";
@@ -35,6 +35,7 @@ export function _(context) {
 };
 
 export function setLanguate(context,lang){
+  sendEvent(context,"setlang",lang)
   var allManifestPath = context.plugin.url().URLByAppendingPathComponent("Contents").URLByAppendingPathComponent("Resources").URLByAppendingPathComponent("i18n").URLByAppendingPathComponent("manifest-" + lang + ".json").path();
                 
   var manifestLangData = NSJSONSerialization.JSONObjectWithData_options_error(NSData.dataWithContentsOfFile(allManifestPath), NSJSONReadingMutableContainers, nil)
@@ -90,7 +91,8 @@ export function exec (context, command,path='') {
   return NSString.alloc().initWithData_encoding_(data, NSUTF8StringEncoding)
 }
 export function showinfo(context,info){
-  createInfoAlert(context, '提示', info)
+  var i18=_(context)
+  createInfoAlert(context, i18.common.info, info)
 }
 export function getCurrentDirectory (context) {
   return context.document.fileURL().URLByDeletingLastPathComponent().path()
@@ -284,6 +286,7 @@ export function unzipFile (context,prefs) {
 
 
 export function checkForFile (context,showalert=true) {
+  var i18=_(context)
   try {
     getCurrentFileName(context)
     getCurrentDirectory(context)
@@ -291,7 +294,7 @@ export function checkForFile (context,showalert=true) {
   } catch (e) {
     if(showalert){
       sendError(context, 'Missing file')
-      createFailAlert(context, '缺少文件', '请先打开sketch文件!')
+      createFailAlert(context, i18.common.m2, i18.common.m5)
     }
     return false
   }
@@ -300,17 +303,17 @@ export function fileExists(path){
   return NSFileManager.defaultManager().fileExistsAtPath(path)
 }
 export function checkForSketchgitFolder (context) {
+  var i18=_(context)
   try {
     const git_root=getGitDirectory(context)
-
     if (!fileExists(git_root+"/.sketchgit")){
-      createFailAlert(context, '提示', '请先保存sketch文件')
+      createFailAlert(context, i18.common.info, i18.common.m1)
       return false
     }
     return true
   } catch (e) {
     sendError(context, 'Missing file')
-    createFailAlert(context, '缺少文件', '请先保存sketch文件')
+    createFailAlert(context, i18.common.m2, i18.common.m1)
     return false
   }
 }
@@ -337,15 +340,16 @@ export function checkIsGitRepository (context,path='') {
   }
 }
 export function checkForRemote (context) {
+  var i18=_(context)
   try {
     if (exec(context, 'git remote').trim()==''){
-      createFailAlert(context, '提示', '请先设置远程仓库地址')
+      createFailAlert(context, i18.common.info, i18.common.m3)
       return false  
     }
     return true
   } catch (e) {
     sendError(context, 'Mission Remote')
-    createFailAlert(context, '提示', '请先设置远程仓库地址')
+    createFailAlert(context, i18.common.info, i18.common.m3)
     return false
   }
 }
@@ -363,7 +367,7 @@ export function checkForGitRepository (context) {
     return true
   } catch (e) {
     sendError(context, 'Not a git repository')
-    createFailAlert(context, '提示', '请先初始化项目')
+    createFailAlert(context, i18.common.info, i18.common.m4)
     return false
   }
 }
